@@ -1,0 +1,6 @@
+version: 0.1.0
+name: myapp12
+description: sample description
+maintainers:
+  - name: myorg
+    email: 
