@@ -5,5 +5,5 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<p>Hello from Docker and McKesson!</p>
+	<p>Hello from Docker!</p>
 </body>
