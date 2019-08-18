@@ -10,7 +10,7 @@ ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 USER root
 
 RUN apk update \
-    && apk add docker=${DOCKER_PACKAGE_VERSION} gettext \
+    && apk add docker=${DOCKER_PACKAGE_VERSION} gettext --update-cache \
     && curl -Lo /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v{$KUBECTL_VERSION}/bin/linux/amd64/kubectl \
     && chmod +x /usr/bin/kubectl
 
