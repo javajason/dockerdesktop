@@ -14,6 +14,6 @@ RUN apk update \
     && curl -Lo /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v{$KUBECTL_VERSION}/bin/linux/amd64/kubectl \
     && chmod +x /usr/bin/kubectl
 
-# COPY jenkins/ /usr/share/jenkins/
+COPY jenkins/ /usr/share/jenkins/
 
 RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
