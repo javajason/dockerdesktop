@@ -1,4 +1,3 @@
-# ARG base_image=jenkins/jenkins:2.180-alpine
 ARG base_image=jenkins/jenkins:2.189-alpine
 
 FROM ${base_image}
