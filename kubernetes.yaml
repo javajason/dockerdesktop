@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jedemo
+spec:
+  selector:
+    matchLabels:
+      app: jedemo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jedemo
+    spec:
+      containers:
+      - name: jedemo-web
+        image: ${DOCKER_REGISTRY_HOSTNAME}/${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_PROD}:${DOCKER_IMAGE_TAG}
+        ports:
+        - containerPort: 80
+# ---
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   name: simple-nginx-service
+# spec:
+#   selector:
+#     app: simple-nginx
+#   ports:
+#     - port: 80
