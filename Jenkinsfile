@@ -29,7 +29,6 @@ node {
         }
     }
 
-/*
     stage('Clone') {
         checkout scm
     }
@@ -44,14 +43,14 @@ node {
             sh 'echo "Tests passed"'
         }
         */
-    }
-
+  }
     stage('Push') {
         docker.withRegistry(env.DOCKER_REGISTRY_URI, env.DOCKER_REGISTRY_CREDENTIALS_ID) {
             docker_image.push(DOCKER_IMAGE_TAG)
         }
     }
 
+/*
     stage('Scan') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: env.DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, responseHandle: 'NONE', url: "${env.DOCKER_REGISTRY_URI}/api/v0/imagescan/scan/${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}/${DOCKER_IMAGE_TAG}/linux/amd64"
 
