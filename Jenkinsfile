@@ -101,9 +101,14 @@ node {
 
             if(DOCKER_ORCHESTRATOR.toLowerCase() == "kubernetes"){
                 println("Deploying to Kubernetes")
+                DOCKER_USER = "${env.BRANCH_NAME}"
+                DOCKER_USER_CLEAN = "${DOCKER_USER.replace(".", "")}"
+                DOCKER_KUBERNETES_NAMESPACE = "se-{DOCKER_USER_CLEAN}"
+                /*
                 withEnv(["DOCKER_KUBE_CONTEXT=${DOCKER_KUBE_CONTEXT}", "DOCKER_KUBERNETES_NAMESPACE=${DOCKER_KUBERNETES_NAMESPACE}"]) {
                     sh 'envsubst < kubernetes.yaml | kubectl --context=${DOCKER_KUBE_CONTEXT} --namespace=${DOCKER_KUBERNETES_NAMESPACE} apply -f -'
                 }
+                */
             }
             else if (DOCKER_ORCHESTRATOR.toLowerCase() == "swarm"){
                 println("Deploying to Swarm")
