@@ -29,6 +29,7 @@ node {
         }
     }
 
+/*
     stage('Clone') {
         checkout scm
     }
@@ -51,7 +52,6 @@ node {
         }
     }
 
-/*
     stage('Scan') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: env.DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, responseHandle: 'NONE', url: "${env.DOCKER_REGISTRY_URI}/api/v0/imagescan/scan/${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}/${DOCKER_IMAGE_TAG}/linux/amd64"
 
