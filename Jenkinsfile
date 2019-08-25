@@ -51,6 +51,7 @@ node {
         }
     }
 
+/*
     stage('Scan') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: env.DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, responseHandle: 'NONE', url: "${env.DOCKER_REGISTRY_URI}/api/v0/imagescan/scan/${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}/${DOCKER_IMAGE_TAG}/linux/amd64"
 
@@ -77,7 +78,7 @@ node {
         }
         println('Response JSON: ' + scan_result)
     }
-
+*/
     stage('Promote') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: env.DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${env.DOCKER_IMAGE_NAMESPACE_PROD}/${env.DOCKER_IMAGE_REPOSITORY}\", \"targetTag\": \"${DOCKER_IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${env.DOCKER_REGISTRY_URI}/api/v0/repositories/${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}/tags/${DOCKER_IMAGE_TAG}/promotion"
 
@@ -104,11 +105,10 @@ node {
                 DOCKER_USER = "${env.BRANCH_NAME}"
                 DOCKER_USER_CLEAN = "${DOCKER_USER.replace(".", "")}"
                 DOCKER_KUBERNETES_NAMESPACE = "se-{DOCKER_USER_CLEAN}"
-                /*
+
                 withEnv(["DOCKER_KUBE_CONTEXT=${DOCKER_KUBE_CONTEXT}", "DOCKER_KUBERNETES_NAMESPACE=${DOCKER_KUBERNETES_NAMESPACE}"]) {
                     sh 'envsubst < kubernetes.yaml | kubectl --context=${DOCKER_KUBE_CONTEXT} --namespace=${DOCKER_KUBERNETES_NAMESPACE} apply -f -'
                 }
-                */
             }
             else if (DOCKER_ORCHESTRATOR.toLowerCase() == "swarm"){
                 println("Deploying to Swarm")
