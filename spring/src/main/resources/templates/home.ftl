@@ -5,5 +5,5 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<p>Hello Varian!</p>
+	<p>Hello Docker and Giants!</p>
 </body>
