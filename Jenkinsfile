@@ -32,7 +32,7 @@ node {
         checkout scm
     }
 
-    stage('At Bat (Build)') {
+    stage('At-Bat (Build)') {
         docker_image = docker.build("${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}")
     }
 
