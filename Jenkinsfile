@@ -107,7 +107,7 @@ node {
                 DOCKER_USER_CLEAN = "${DOCKER_USER.replace(".", "")}"
                 DOCKER_KUBERNETES_NAMESPACE = "se-{DOCKER_USER_CLEAN}"
 
-                DOCKER_KUBE_CONTEXT="ucp_ucp.${DOCKER_CLUSTER_DOMAIN}:6443_jenkins"
+                // DOCKER_KUBE_CONTEXT="ucp_ucp.${DOCKER_CLUSTER_DOMAIN}:6443_jenkins"
 
                 withEnv(["DOCKER_KUBE_CONTEXT=${DOCKER_KUBE_CONTEXT}", "DOCKER_KUBERNETES_NAMESPACE=${DOCKER_KUBERNETES_NAMESPACE}"]) {
                     sh 'envsubst < kubernetes.yaml | kubectl --context=${DOCKER_KUBE_CONTEXT} --namespace=${DOCKER_KUBERNETES_NAMESPACE} apply -f -'
