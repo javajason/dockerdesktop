@@ -38,7 +38,7 @@
                 }
             }
             else if (DOCKER_ORCHESTRATOR.toLowerCase() == "swarm"){
-                println("Deploying to Swarm")
+                println("Deploy to Swarm")
                 withEnv(["DOCKER_UCP_COLLECTION_PATH=${DOCKER_UCP_COLLECTION_PATH}"]) {
                     withDockerServer([credentialsId: DOCKER_UCP_CREDENTIALS_ID, uri: DOCKER_UCP_URI]) {
                         sh "docker stack deploy -c docker-compose.yml ${DOCKER_STACK_NAME}"
