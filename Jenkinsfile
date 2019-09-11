@@ -1,9 +1,12 @@
 DOCKER_USER = "${env.BRANCH_NAME}"
 DOCKER_USER_CLEAN = "${DOCKER_USER.replace(".", "")}"
-DOCKER_IMAGE_NAMESPACE = "se-${DOCKER_USER_CLEAN}"
-DOCKER_IMAGE_REPOSITORY = "simple-nginx"
-DOCKER_IMAGE_REPOSITORY_DEV = "${DOCKER_IMAGE_REPOSITORY}-dev"
-DOCKER_IMAGE_REPOSITORY_PROD = "${DOCKER_IMAGE_REPOSITORY}-prod"
+// DOCKER_IMAGE_NAMESPACE = "se-${DOCKER_USER_CLEAN}"
+DOCKER_IMAGE_NAMESPACE_DEV = "jasons-org"
+DOCKER_IMAGE_NAMESPACE_PROD = "jasons-org-prod"
+// DOCKER_IMAGE_REPOSITORY = "simple-nginx"
+DOCKER_IMAGE_REPOSITORY = "jedemo"
+// DOCKER_IMAGE_REPOSITORY_DEV = "${DOCKER_IMAGE_REPOSITORY}-dev"
+// DOCKER_IMAGE_REPOSITORY_PROD = "${DOCKER_IMAGE_REPOSITORY}-prod"
 DOCKER_IMAGE_TAG = "${env.BUILD_TIMESTAMP}"
 
 // Available orchestrators = [ "kubernetes" | "swarm" ]
@@ -63,7 +66,8 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        docker_image = docker.build("${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_DEV}")
+        // docker_image = docker.build("${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_DEV}")
+        docker_image = docker.build("${DOCKER_IMAGE_NAMESPACE_DEV}/${DOCKER_IMAGE_REPOSITORY}")
     }
 
     stage('Test') {
@@ -110,14 +114,17 @@ node {
     */
 
     stage('Promote') {
-        httpRequest acceptType: 'APPLICATION_JSON', authentication: DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_PROD}\", \"targetTag\": \"${DOCKER_IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${DOCKER_REGISTRY_URI}/api/v0/repositories/${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_DEV}/tags/${DOCKER_IMAGE_TAG}/promotion"
+        // httpRequest acceptType: 'APPLICATION_JSON', authentication: DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_PROD}\", \"targetTag\": \"${DOCKER_IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${DOCKER_REGISTRY_URI}/api/v0/repositories/${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_DEV}/tags/${DOCKER_IMAGE_TAG}/promotion"
+        httpRequest acceptType: 'APPLICATION_JSON', authentication: DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${DOCKER_IMAGE_NAMESPACE_PROD}/${DOCKER_IMAGE_REPOSITORY}\", \"targetTag\": \"${DOCKER_IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${DOCKER_REGISTRY_URI}/api/v0/repositories/${DOCKER_IMAGE_NAMESPACE_DEV}/${DOCKER_IMAGE_REPOSITORY}/tags/${DOCKER_IMAGE_TAG}/promotion"
     }
 
     stage('Deploy') {
         withEnv(["DOCKER_APPLICATION_FQDN=${DOCKER_APPLICATION_FQDN}",
                  "DOCKER_REGISTRY_HOSTNAME=${DOCKER_REGISTRY_HOSTNAME}",
-                 "DOCKER_IMAGE_NAMESPACE=${DOCKER_IMAGE_NAMESPACE}",
-                 "DOCKER_IMAGE_REPOSITORY_PROD=${DOCKER_IMAGE_REPOSITORY_PROD}",
+                 // "DOCKER_IMAGE_NAMESPACE=${DOCKER_IMAGE_NAMESPACE}",
+                 // "DOCKER_IMAGE_REPOSITORY_PROD=${DOCKER_IMAGE_REPOSITORY_PROD}",
+                 "DOCKER_IMAGE_NAMESPACE=${DOCKER_IMAGE_NAMESPACE_PROD}",
+                 "DOCKER_IMAGE_REPOSITORY_PROD=${DOCKER_IMAGE_REPOSITORY}",
                  "DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}",
                  "DOCKER_USER_CLEAN=${DOCKER_USER_CLEAN}"
                  ]) {
