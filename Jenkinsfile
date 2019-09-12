@@ -65,13 +65,13 @@ node {
  // TODO       checkout scm
     }
 
-// TODO    stage('Build') {
+    stage('Build') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
         // docker_image = docker.build("${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_DEV}")
 // TODO        docker_image = docker.build("${DOCKER_IMAGE_NAMESPACE_DEV}/${DOCKER_IMAGE_REPOSITORY}")
-// TODO    }
+    }
 
     stage('Test') {
         /* Ideally, we would run a test framework against our image.
@@ -137,7 +137,7 @@ node {
             if(DOCKER_ORCHESTRATOR.toLowerCase() == "kubernetes"){
                 println("Deploying to Kubernetes")
                 println("Pulling image?")
-                sh 'cat kubernetes.yaml'
+                // sh 'cat kubernetes.yaml'
                 println(kubernetes.yaml)
                 println("-------")
                 withEnv(["DOCKER_KUBE_CONTEXT=${DOCKER_KUBE_CONTEXT}", "DOCKER_KUBERNETES_NAMESPACE=${DOCKER_KUBERNETES_NAMESPACE}"]) {
