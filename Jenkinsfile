@@ -65,13 +65,13 @@ node {
  // TODO       checkout scm
     }
 
-    stage('Build') {
+// TODO    stage('Build') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
         // docker_image = docker.build("${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_DEV}")
 // TODO        docker_image = docker.build("${DOCKER_IMAGE_NAMESPACE_DEV}/${DOCKER_IMAGE_REPOSITORY}")
-    }
+// TODO    }
 
     stage('Test') {
         /* Ideally, we would run a test framework against our image.
