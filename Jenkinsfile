@@ -137,10 +137,11 @@ node {
 
             if(DOCKER_ORCHESTRATOR.toLowerCase() == "kubernetes"){
                 println("Deploying to Kubernetes")
-                println("Pulling image?")
-                sh 'cat kubernetes.yaml'
-                // println(kubernetes.yaml)
+                println("\nKUBERNETES YAML FILE:")
                 println("-------")
+                sh 'cat kubernetes.yaml'
+                println("-------")
+                println("Image to be pulled from: ${DOCKER_REGISTRY_HOSTNAME}/${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_PROD}:${DOCKER_IMAGE_TAG}")
                 withEnv(["DOCKER_KUBE_CONTEXT=${DOCKER_KUBE_CONTEXT}", "DOCKER_KUBERNETES_NAMESPACE=${DOCKER_KUBERNETES_NAMESPACE}"]) {
                     sh 'envsubst < kubernetes.yaml | kubectl --context=${DOCKER_KUBE_CONTEXT} --namespace=${DOCKER_KUBERNETES_NAMESPACE} apply -f -'
                 }
