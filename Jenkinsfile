@@ -3,7 +3,7 @@ DOCKER_IMAGE_TAG = "${env.BUILD_NUMBER}-ee-alpine"
 node {
     def docker_image
 
-    stage('Dugout (Validate)') {
+    stage('Validate') {
         required_env = [ 'DOCKER_IMAGE_NAMESPACE_DEV',
                          'DOCKER_IMAGE_NAMESPACE_PROD',
                          'DOCKER_IMAGE_REPOSITORY',
@@ -28,15 +28,15 @@ node {
         }
     }
 
-    stage('On Deck (Clone)') {
+    stage('Clone') {
         checkout scm
     }
 
-    stage('At-Bat (Build)') {
+    stage('Build') {
         docker_image = docker.build("${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}")
     }
 
-    stage('Base Hit (Test)') {
+    stage('Test') {
         /* Figure out how to get this to work on a stand alone Jenkins instance running with the -u jenkins_uid:jenkins_gid
         docker_image.inside {
             sh 'echo "Tests passed"'
@@ -44,13 +44,13 @@ node {
         */
     }
 
-    stage('First Base (Push)') {
+    stage('Push') {
         docker.withRegistry(env.DOCKER_REGISTRY_URI, env.DOCKER_REGISTRY_CREDENTIALS_ID) {
             docker_image.push(DOCKER_IMAGE_TAG)
         }
     }
 
-    stage('Second Base (Scan)') {
+    stage('Scan') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: env.DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, responseHandle: 'NONE', url: "${env.DOCKER_REGISTRY_URI}/api/v0/imagescan/scan/${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}/${DOCKER_IMAGE_TAG}/linux/amd64"
 
         def scan_result
@@ -77,10 +77,10 @@ node {
         println('Response JSON: ' + scan_result)
     }
 
-    stage('Third Base (Promote)') {
+    stage('Promote') {
         httpRequest acceptType: 'APPLICATION_JSON', authentication: env.DOCKER_REGISTRY_CREDENTIALS_ID, contentType: 'APPLICATION_JSON', httpMode: 'POST', ignoreSslErrors: true, requestBody: "{\"targetRepository\": \"${env.DOCKER_IMAGE_NAMESPACE_PROD}/${env.DOCKER_IMAGE_REPOSITORY}\", \"targetTag\": \"${DOCKER_IMAGE_TAG}\"}", responseHandle: 'NONE', url: "${env.DOCKER_REGISTRY_URI}/api/v0/repositories/${env.DOCKER_IMAGE_NAMESPACE_DEV}/${env.DOCKER_IMAGE_REPOSITORY}/tags/${DOCKER_IMAGE_TAG}/promotion"
     }
-    stage('Home (Deploy)') {
+    stage('Deploy') {
         withDockerServer([credentialsId: env.DOCKER_UCP_CREDENTIALS_ID, uri: env.DOCKER_UCP_URI]) {
             sh "docker service update --image ${env.DOCKER_REGISTRY_HOSTNAME}/${env.DOCKER_IMAGE_NAMESPACE_PROD}/${env.DOCKER_IMAGE_REPOSITORY}:${DOCKER_IMAGE_TAG} ${env.DOCKER_SERVICE_NAME}" 
         }
