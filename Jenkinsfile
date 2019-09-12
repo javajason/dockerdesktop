@@ -77,9 +77,9 @@ node {
         /* Ideally, we would run a test framework against our image.
          * For this example, we're using a Volkswagen-type approach ;-) */
 
-        docker_image.inside {
-            sh 'echo "Tests passed"'
-        }
+// TODO        docker_image.inside {
+// TODO            sh 'echo "Tests passed"'
+// TODO        }
     }
     /* TODO
     stage('Push') {
@@ -132,7 +132,8 @@ node {
                  "DOCKER_IMAGE_REPOSITORY_PROD=${DOCKER_IMAGE_REPOSITORY}",
                  "DOCKER_IMAGE_TAG=${DOCKER_IMAGE_TAG}",
                  "DOCKER_USER_CLEAN=${DOCKER_USER_CLEAN}"
-                 ]) {
+                 ])
+        {
 
             if(DOCKER_ORCHESTRATOR.toLowerCase() == "kubernetes"){
                 println("Deploying to Kubernetes")
