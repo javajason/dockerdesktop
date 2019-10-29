@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: jedemo-web
-        image: ${DOCKER_REGISTRY_HOSTNAME}/${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_PROD}:${DOCKER_IMAGE_TAG}
+        # image: ${DOCKER_REGISTRY_HOSTNAME}/${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_PROD}:${DOCKER_IMAGE_TAG}
+        image: ${DOCKER_REGISTRY_HOSTNAME}/${DOCKER_IMAGE_NAMESPACE}/${DOCKER_IMAGE_REPOSITORY_PROD}:foo
         ports:
         - containerPort: 80
 # ---
