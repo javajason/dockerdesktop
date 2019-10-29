@@ -30,7 +30,8 @@ spec:
         app: jedemo
     spec:
       containers:
-      - image: dtr.west.us.se.dckr.org/jasons-org-prod/jedemo:2019.09.12.053451
+      # - image: dtr.west.us.se.dckr.org/jasons-org-prod/jedemo:2019.09.12.053451
+      - image: dtr.west.us.se.dckr.org/jasons-org-prod/jedemo:${DOCKER_IMAGE_TAG}
         imagePullPolicy: IfNotPresent
         name: jedemo-web
         ports:
